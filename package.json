@@ -14,8 +14,10 @@
   "dependencies": {
     "next": "^15.5.0",
     "nodemailer": "^7.0.5",
+    "optional": "^0.1.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-fast-marquee": "^1.6.5",
     "zod": "^4.0.0"
   },
   "devDependencies": {

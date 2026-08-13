@@ -1,8 +1,5 @@
-import { ContactForm } from "@/components/forms/contact-form";
-import { ButtonLink } from "@/components/ui/button";
-import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
-import { Section } from "@/components/ui/section";
-import { siteConfig } from "@/lib/site-config";
+import { MasnyiHome } from "@/components/sections/masnyi-home";
 
-export default function HomePage() { return <><Section className="bg-surface"><Container><Reveal><p className="mb-5 text-sm font-semibold uppercase tracking-widest text-accent">Reusable landing foundation</p><h1 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">A calm, capable starting point for your next client site.</h1><p className="mt-6 max-w-2xl text-lg leading-8 text-muted">This neutral demonstration page exists to verify the technical core. Replace the design layer with your client’s Figma direction.</p><div className="mt-8 flex flex-wrap gap-3"><ButtonLink href="#contact">Test the contact form</ButtonLink><a href="/privacy" className="inline-flex min-h-11 items-center px-3 text-sm font-semibold text-muted hover:text-ink">View privacy template</a></div></Reveal></Container></Section><Section><Container><div className="grid gap-8 sm:grid-cols-3"><Reveal><h2 className="font-semibold">Responsive</h2><p className="mt-2 text-sm leading-6 text-muted">Mobile-first layout primitives that adapt from small screens to wide desktops.</p></Reveal><Reveal><h2 className="font-semibold">Accessible</h2><p className="mt-2 text-sm leading-6 text-muted">Semantic markup, visible focus, keyboard-friendly navigation and reduced motion.</p></Reveal><Reveal><h2 className="font-semibold">Ready to hand off</h2><p className="mt-2 text-sm leading-6 text-muted">Clear boundaries between reusable infrastructure and client-specific design.</p></Reveal></div></Container></Section><Section id="contact" className="bg-surface"><Container><div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr]"><div><h2 className="text-3xl font-semibold tracking-tight">Start a conversation</h2><p className="mt-4 max-w-md leading-7 text-muted">The form is wired to optional server-side delivery adapters. Configure them in your environment when needed.</p><p className="mt-6 text-sm text-muted">{siteConfig.contact.email}</p></div><div className="rounded-token border border-line bg-white p-5 sm:p-8"><ContactForm /></div></div></Container></Section></>; }
+export default function HomePage() {
+  return <MasnyiHome />;
+}

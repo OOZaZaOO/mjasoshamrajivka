@@ -1,9 +1,18 @@
 "use client";
-import Link from "next/link";
-import { useState } from "react";
-import { useEffect, useRef } from "react";
-import { Container } from "@/components/ui/container";
-import { ButtonLink } from "@/components/ui/button";
-import { siteConfig } from "@/lib/site-config";
 
-export function Header() { const [open, setOpen] = useState(false); const menuButton = useRef<HTMLButtonElement>(null); useEffect(() => { if (!open) return; const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") { setOpen(false); menuButton.current?.focus(); } }; document.addEventListener("keydown", closeOnEscape); return () => document.removeEventListener("keydown", closeOnEscape); }, [open]); return <header className="border-b border-line bg-surface/95 backdrop-blur"><Container><div className="flex min-h-16 items-center justify-between"><Link href="/" className="font-semibold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">{siteConfig.name}</Link><nav aria-label="Main navigation" className="hidden items-center gap-7 md:flex"><Link href="#contact" className="text-sm text-muted hover:text-ink">Contact</Link><ButtonLink href="#contact">Start a project</ButtonLink></nav><button ref={menuButton} type="button" className="rounded-md p-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent md:hidden" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? "Close" : "Menu"}</button></div>{open && <nav id="mobile-navigation" aria-label="Mobile navigation" className="flex flex-col gap-4 border-t border-line py-5 md:hidden"><Link href="#contact" onClick={() => setOpen(false)} className="py-2">Contact</Link><ButtonLink href="#contact" onClick={() => setOpen(false)}>Start a project</ButtonLink></nav>}</Container></header>; }
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import { ContactDialogTrigger } from "@/components/forms/contact-dialog";
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const menuButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (!open) return;
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") { setOpen(false); menuButton.current?.focus(); } };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open]);
+  const close = () => setOpen(false);
+  return <header className="masnyi-header"><div className="masnyi-header__inner"><Link href="/" className="masnyi-logo" aria-label="М'ясний — на головну">М&apos;ЯСНИЙ</Link><nav className="masnyi-nav" aria-label="Основна навігація"><Link href="#dinner">АСОРТИМЕНТ</Link><Link href="#footer">КОНТАКТИ</Link></nav><ContactDialogTrigger className="masnyi-header__cta">Залишити заявку</ContactDialogTrigger><button ref={menuButton} type="button" className="masnyi-menu-button" aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}><span>{open ? "Закрити" : "Меню"}</span></button></div>{open && <nav id="mobile-navigation" className="masnyi-mobile-nav" aria-label="Мобільна навігація"><Link href="#dinner" onClick={close}>АСОРТИМЕНТ</Link><Link href="#footer" onClick={close}>КОНТАКТИ</Link><ContactDialogTrigger className="masnyi-header__cta" onClick={close}>Залишити заявку</ContactDialogTrigger></nav>}</header>;
+}
