@@ -5,16 +5,22 @@ import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { ContactForm } from "@/components/forms/contact-form";
 import Link from "next/link";
 
+type ContactDialogEvent = CustomEvent<{ productName?: string }>;
+
 let openContactDialog: (() => void) | null = null;
 
 export function ContactDialog() {
   const [open, setOpen] = useState(false);
+  const [prefillMessage, setPrefillMessage] = useState("");
   const closeButton = useRef<HTMLButtonElement>(null);
   openContactDialog = () => setOpen(true);
 
   useEffect(() => {
-    const openDialog = () => setOpen(true);
-    window.addEventListener("open-contact-dialog", openDialog);
+    const openDialog = (event: Event) => {
+      const productName = (event as ContactDialogEvent).detail?.productName;
+      setPrefillMessage(productName ? `Цікавить: ${productName}` : "");
+      setOpen(true);
+    };
     window.addEventListener("open-contact-dialog", openDialog);
     return () => window.removeEventListener("open-contact-dialog", openDialog);
   }, []);
@@ -43,7 +49,7 @@ export function ContactDialog() {
           </div>
           <button ref={closeButton} type="button" className="dialog-close" onClick={() => setOpen(false)} aria-label="Закрити форму">×</button>
         </div>
-        <ContactForm />
+        <ContactForm key={prefillMessage} initialMessage={prefillMessage} />
         <p className="contact-dialog__privacy">Натискаючи кнопку, ви погоджуєтесь з <Link href="/privacy">політикою конфіденційності</Link>.</p>
       </div>
     </div>

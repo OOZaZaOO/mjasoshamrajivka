@@ -7,8 +7,8 @@ type FormState = "idle" | "submitting" | "success" | "error";
 type Fields = { name: string; phone: string; email: string; message: string; website: string };
 const initial: Fields = { name: "", phone: "", email: "", message: "", website: "" };
 
-export function ContactForm({ successMode = "inline" }: { successMode?: "inline" | "redirect" }) {
-  const [fields, setFields] = useState<Fields>(initial); const [errors, setErrors] = useState<Record<string, string>>({}); const [state, setState] = useState<FormState>("idle");
+export function ContactForm({ successMode = "inline", initialMessage = "" }: { successMode?: "inline" | "redirect"; initialMessage?: string }) {
+  const [fields, setFields] = useState<Fields>({ ...initial, message: initialMessage }); const [errors, setErrors] = useState<Record<string, string>>({}); const [state, setState] = useState<FormState>("idle");
   function update(key: keyof Fields, value: string) { setFields((current) => ({ ...current, [key]: value })); setErrors((current) => ({ ...current, [key]: "" })); }
   async function submit(event: FormEvent<HTMLFormElement>) { event.preventDefault(); const parsed = contactSchema.safeParse(fields); if (!parsed.success) { const next: Record<string, string> = {}; for (const issue of parsed.error.issues) next[String(issue.path[0])] = issue.message; setErrors(next); setState("error"); return; } setState("submitting"); try { const response = await fetch("/api/contact", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(fields) }); if (!response.ok) throw new Error(); if (successMode === "redirect") window.location.assign("/thank-you"); else { setState("success"); setFields(initial); } } catch { setState("error"); } }
   if (state === "success") return <div role="status" className="rounded-token border border-line bg-surface p-6"><h3 className="font-semibold">Дякуємо — заявку отримано.</h3><p className="mt-2 text-sm text-muted">Ми зв&apos;яжемося з вами найближчим часом.</p></div>;
