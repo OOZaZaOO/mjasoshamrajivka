@@ -1,17 +1,30 @@
-export type AssortmentCategory = "all" | "beef" | "pork" | "poultry" | "grill";
+export type AssortmentCategoryId = "beef" | "pork" | "poultry" | "grill";
+
+export type AssortmentCategory = {
+  id: AssortmentCategoryId;
+  name: string;
+  displayOrder: number;
+  /** Hydrated relation for UI consumers; mock/Supabase storage may keep this normalized. */
+  products?: AssortmentProduct[];
+};
 
 export type AssortmentProduct = {
   id: string;
+  categoryId: AssortmentCategoryId;
   name: string;
-  category: Exclude<AssortmentCategory, "all" | "grill">;
   price: string;
-  unit: string;
   tag?: string;
+  displayOrder: number;
   status?: string;
   featured?: boolean;
 };
 
-export const assortmentCategories: Array<{ id: AssortmentCategory; label: string }> = [
+export type AssortmentData = {
+  categories: AssortmentCategory[];
+  products: AssortmentProduct[];
+};
+
+export const assortmentCategories: Array<{ id: "all" | AssortmentCategoryId; label: string }> = [
   { id: "all", label: "Всі позиції" },
   { id: "beef", label: "Яловичина" },
   { id: "pork", label: "Свинина" },
@@ -19,19 +32,28 @@ export const assortmentCategories: Array<{ id: AssortmentCategory; label: string
   { id: "grill", label: "Гриль" },
 ];
 
-export const assortmentProducts: AssortmentProduct[] = [
-  { id: "beef-ribeye", name: "Стейк Рібай", category: "beef", price: "1200", unit: "грн / кг", tag: "Для гриля", status: "Витримка 21 день", featured: true },
-  { id: "beef-new-york", name: "Стейк Нью-Йорк", category: "beef", price: "950", unit: "грн / кг", tag: "Преміум", status: "Преміум", featured: true },
-  { id: "beef-shoulder", name: "Лопатка", category: "beef", price: "", unit: "", status: "За запитом" },
-  { id: "pork-neck", name: "Свиняча шийка", category: "pork", price: "289", unit: "грн / кг", tag: "Хіт", status: "Ідеально для шашлику", featured: true },
-  { id: "pork-ribs", name: "Реберця", category: "pork", price: "", unit: "", status: "За запитом" },
-  { id: "beef-mince", name: "Фарш яловичий (нежирний)", category: "beef", price: "380", unit: "грн / кг", tag: "Свіжий помел", status: "Свіжий помел" },
-  { id: "pork-collar", name: "Свинячий ошийок", category: "pork", price: "290", unit: "грн / кг", tag: "Ідеально для шашлику", status: "Ідеально для шашлику" },
-  { id: "turkey-fillet", name: "Філе індики", category: "poultry", price: "520", unit: "грн / кг", tag: "Дієтичне", status: "Дієтичне" },
-];
+export const assortmentMockData: AssortmentData = {
+  categories: [
+    { id: "beef", name: "Яловичина", displayOrder: 1 },
+    { id: "pork", name: "Свинина", displayOrder: 2 },
+    { id: "poultry", name: "Птиця", displayOrder: 3 },
+  ],
+  products: [
+    { id: "beef-ribeye", categoryId: "beef", name: "Стейк Рібай", price: "від 1 200 грн / кг", tag: "Для гриля", displayOrder: 1, status: "Витримка 21 день", featured: true },
+    { id: "beef-new-york", categoryId: "beef", name: "Стейк Нью-Йорк", price: "від 950 грн / кг", tag: "Преміум", displayOrder: 2, featured: true },
+    { id: "beef-shoulder", categoryId: "beef", name: "Лопатка", price: "За запитом", displayOrder: 3 },
+    { id: "beef-mince", categoryId: "beef", name: "Фарш яловичий (нежирний)", price: "від 380 грн / кг", tag: "Свіжий помел", displayOrder: 4 },
+    { id: "pork-neck", categoryId: "pork", name: "Свиняча шийка", price: "від 289 грн / кг", tag: "Хіт", displayOrder: 1, status: "Ідеально для шашлику", featured: true },
+    { id: "pork-ribs", categoryId: "pork", name: "Реберця", price: "За запитом", displayOrder: 2 },
+    { id: "pork-collar", categoryId: "pork", name: "Свинячий ошийок", price: "290 грн / кг", tag: "Ідеально для шашлику", displayOrder: 3 },
+    { id: "turkey-fillet", categoryId: "poultry", name: "Філе індики", price: "520 грн / кг", tag: "Дієтичне", displayOrder: 1 },
+  ],
+};
 
-export const assortmentSections: Array<{ category: Exclude<AssortmentCategory, "all" | "grill">; label: string; number: string }> = [
-  { category: "beef", label: "Яловичина", number: "01" },
-  { category: "pork", label: "Свинина", number: "02" },
-  { category: "poultry", label: "Птиця", number: "03" },
-];
+export const assortmentProducts = assortmentMockData.products;
+
+export const assortmentSections = assortmentMockData.categories.map((category) => ({
+  category: category.id,
+  label: category.name,
+  number: String(category.displayOrder).padStart(2, "0"),
+}));

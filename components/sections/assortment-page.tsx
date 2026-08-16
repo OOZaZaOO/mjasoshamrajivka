@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { ContactDialog, ContactDialogTrigger } from "@/components/forms/contact-dialog";
 import { Marquee } from "@/components/ui/marquee";
-import { assortmentCategories, assortmentProducts, assortmentSections, type AssortmentCategory, type AssortmentProduct } from "@/lib/assortment";
+import { assortmentCategories, assortmentProducts, assortmentSections, type AssortmentCategoryId, type AssortmentProduct } from "@/lib/assortment";
 
 function openProductRequest(product: AssortmentProduct) {
   window.dispatchEvent(new CustomEvent("open-contact-dialog", { detail: { productName: product.name } }));
@@ -18,9 +18,7 @@ function ProductRow({ product }: { product: AssortmentProduct }) {
           <strong>{product.name}</strong>
           {product.tag && <span className="assortment-product__tag">{product.tag}</span>}
         </span>
-        <span className="assortment-product__meta">
-          {product.price ? <>від {product.price} {product.unit}</> : product.status}
-        </span>
+        <span className="assortment-product__meta">{product.price}</span>
       </button>
       {product.status && product.price && <span className="assortment-product__mobile-status">{product.status}</span>}
     </li>
@@ -28,7 +26,7 @@ function ProductRow({ product }: { product: AssortmentProduct }) {
 }
 
 export function AssortmentPage() {
-  const [activeCategory, setActiveCategory] = useState<AssortmentCategory>("all");
+  const [activeCategory, setActiveCategory] = useState<"all" | AssortmentCategoryId>("all");
   const visibleSections = useMemo(() => assortmentSections.filter((section) => activeCategory === "all" || activeCategory === section.category || activeCategory === "grill"), [activeCategory]);
 
   return (
@@ -60,7 +58,7 @@ export function AssortmentPage() {
           <h2 id="catalog-title" className="sr-only">Каталог м&apos;яса</h2>
           <div className="assortment-sections">
             {visibleSections.map((section) => {
-              const products = assortmentProducts.filter((product) => product.category === section.category);
+              const products = assortmentProducts.filter((product) => product.categoryId === section.category);
               return <section key={section.category} className="assortment-section" aria-labelledby={`assortment-${section.category}`}>
                 <div className="assortment-section__heading"><h3 id={`assortment-${section.category}`}>{section.label}</h3><span>{section.number}</span></div>
                 <ul>{products.map((product) => <ProductRow key={product.id} product={product} />)}</ul>
