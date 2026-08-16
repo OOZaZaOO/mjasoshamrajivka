@@ -2,39 +2,48 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ContactDialogTrigger } from "@/components/forms/contact-dialog";
-import { Sheet, SheetClose, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 const menuItems = [
   { label: "Головна", href: "/" },
   { label: "Асортимент", href: "/assortment" },
-  { label: "Як це працює", href: "#how-it-works" },
   { label: "Контакти", href: "#footer" },
 ];
 
 export function MobileMenu() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      {open ? (
-        <button type="button" className="masnyi-menu-button" aria-label="Закрити меню" aria-expanded="true" data-state="open" onClick={() => setOpen(false)}>
-          <span />
-          <span />
-          <span />
-        </button>
-      ) : (
-        <SheetTrigger asChild>
-          <button type="button" className="masnyi-menu-button" aria-label="Відкрити меню" aria-expanded="false" data-state="closed">
-            <span />
-            <span />
-            <span />
-          </button>
-        </SheetTrigger>
-      )}
-      <SheetContent className="mobile-sheet" aria-describedby={undefined}>
+      <button
+        ref={triggerRef}
+        type="button"
+        className="masnyi-menu-button"
+        aria-label={open ? "Закрити меню" : "Відкрити меню"}
+        aria-expanded={open}
+        aria-controls="mobile-menu-panel"
+        data-state={open ? "open" : "closed"}
+        onClick={() => setOpen((current) => !current)}
+      >
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+        <span aria-hidden="true" />
+      </button>
+      <SheetContent
+        id="mobile-menu-panel"
+        className="mobile-sheet"
+        aria-describedby={undefined}
+        onCloseAutoFocus={(event) => { event.preventDefault(); triggerRef.current?.focus(); }}
+      >
         <SheetTitle className="sr-only">Мобільне меню</SheetTitle>
         <div className="mobile-sheet__inner">
           <nav className="mobile-sheet__nav" aria-label="Мобільна навігація">

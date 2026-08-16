@@ -2,6 +2,8 @@ node_modules
 .next
 out
 .env*
+# Keep local passwords, session secrets and database URLs out of Git.
+.env.local
 !.env.example
 *.tsbuildinfo
 .DS_Store

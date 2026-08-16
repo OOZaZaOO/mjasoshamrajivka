@@ -4,11 +4,14 @@ import Image from "next/image";
 import { useMemo, useState } from "react";
 import { ContactDialog, ContactDialogTrigger } from "@/components/forms/contact-dialog";
 import { Marquee } from "@/components/ui/marquee";
-import { assortmentCategories, assortmentProducts, assortmentSections, type AssortmentCategoryId, type AssortmentProduct } from "@/lib/assortment";
+import type { AssortmentCategoryId, AssortmentData, AssortmentProduct } from "@/lib/assortment";
 
 function openProductRequest(product: AssortmentProduct) {
   window.dispatchEvent(new CustomEvent("open-contact-dialog", { detail: { productName: product.name } }));
 }
+
+const showAssortmentHero = false;
+const showAssortmentMarquee = false;
 
 function ProductRow({ product }: { product: AssortmentProduct }) {
   return (
@@ -25,40 +28,45 @@ function ProductRow({ product }: { product: AssortmentProduct }) {
   );
 }
 
-export function AssortmentPage() {
+export function AssortmentPage({ initialData }: { initialData: AssortmentData }) {
   const [activeCategory, setActiveCategory] = useState<"all" | AssortmentCategoryId>("all");
-  const visibleSections = useMemo(() => assortmentSections.filter((section) => activeCategory === "all" || activeCategory === section.category || activeCategory === "grill"), [activeCategory]);
+  const sections = useMemo(() => initialData.categories.map((category) => ({ category: category.id, label: category.name, number: String(category.displayOrder).padStart(2, "0") })), [initialData.categories]);
+  const visibleSections = useMemo(() => sections.filter((section) => activeCategory === "all" || activeCategory === section.category || activeCategory === "grill"), [activeCategory, sections]);
 
   return (
     <>
       <div className="assortment-page">
-        <section className="assortment-hero" aria-labelledby="assortment-title">
-          <div className="assortment-hero__copy">
-            <h1 id="assortment-title">СВІЖЕ НА<br />СЬОГОДНІ.</h1>
-            <p>Наші м&apos;ясники щодня готують свіжі відруби. Якщо ви не впевнені, що саме підійде для вашої страви — ми завжди тут, щоб допомогти.</p>
-            <ContactDialogTrigger className="assortment-button">Допоможіть обрати</ContactDialogTrigger>
-          </div>
-          <div className="assortment-hero__art">
-            <span className="assortment-hero__cut">CUT/01</span>
-            <div className="assortment-hero__masked-image"><Image src="/images/masnyi/assortment-steak.jpeg" alt="Свіжий стейк на дошці" fill priority sizes="(max-width: 767px) calc(100vw - 32px), 360px" /></div>
-            <span className="assortment-hero__today">СЬОГОДНІ</span>
-          </div>
-        </section>
+        {showAssortmentHero && (
+          <section className="assortment-hero" aria-labelledby="assortment-title">
+            <div className="assortment-hero__copy">
+              <h1 id="assortment-title">СВІЖЕ НА<br />СЬОГОДНІ.</h1>
+              <p>Наші м&apos;ясники щодня готують свіжі відруби. Якщо ви не впевнені, що саме підійде для вашої страви — ми завжди тут, щоб допомогти.</p>
+              <ContactDialogTrigger className="assortment-button">Допоможіть обрати</ContactDialogTrigger>
+            </div>
+            <div className="assortment-hero__art">
+              <span className="assortment-hero__cut">CUT/01</span>
+              <div className="assortment-hero__masked-image"><Image src="/images/masnyi/assortment-steak.jpeg" alt="Свіжий стейк на дошці" fill priority sizes="(max-width: 767px) calc(100vw - 32px), 360px" /></div>
+              <span className="assortment-hero__today">СЬОГОДНІ</span>
+            </div>
+          </section>
+        )}
 
-        <Marquee className="assortment-marquee" label="Категорії м'яса" speed={45}>
-          <span>ЯЛОВИЧИНА</span><i aria-hidden="true">•</i><span>СВИНИНА</span><i aria-hidden="true">•</i><span>ПТИЦЯ</span><i aria-hidden="true">•</i><span>ДЛЯ ГРИЛЮ</span><i aria-hidden="true">•</i><span>НАБОРИ</span><i aria-hidden="true">•</i>
-        </Marquee>
+        {showAssortmentMarquee && (
+          <Marquee className="assortment-marquee" label="Категорії м'яса" speed={45}>
+            <span>ЯЛОВИЧИНА</span><i aria-hidden="true">•</i><span>СВИНИНА</span><i aria-hidden="true">•</i><span>ПТИЦЯ</span><i aria-hidden="true">•</i><span>ДЛЯ ГРИЛЮ</span><i aria-hidden="true">•</i><span>НАБОРИ</span><i aria-hidden="true">•</i>
+          </Marquee>
+        )}
 
         <section className="assortment-catalog" aria-labelledby="catalog-title">
           <div className="assortment-category-nav" role="tablist" aria-label="Категорії асортименту">
-            {assortmentCategories.map((category) => (
+            {[{ id: "all", label: "Всі позиції" }, ...initialData.categories.map((category) => ({ id: category.id, label: category.name }))].map((category) => (
               <button key={category.id} type="button" role="tab" aria-selected={activeCategory === category.id} className={activeCategory === category.id ? "is-active" : ""} onClick={() => setActiveCategory(category.id)}>{category.label}</button>
             ))}
           </div>
           <h2 id="catalog-title" className="sr-only">Каталог м&apos;яса</h2>
           <div className="assortment-sections">
             {visibleSections.map((section) => {
-              const products = assortmentProducts.filter((product) => product.categoryId === section.category);
+              const products = initialData.products.filter((product) => product.categoryId === section.category).sort((a, b) => a.displayOrder - b.displayOrder);
               return <section key={section.category} className="assortment-section" aria-labelledby={`assortment-${section.category}`}>
                 <div className="assortment-section__heading"><h3 id={`assortment-${section.category}`}>{section.label}</h3><span>{section.number}</span></div>
                 <ul>{products.map((product) => <ProductRow key={product.id} product={product} />)}</ul>

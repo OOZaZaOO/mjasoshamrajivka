@@ -1,4 +1,4 @@
-export type AssortmentCategoryId = "beef" | "pork" | "poultry" | "grill";
+export type AssortmentCategoryId = string;
 
 export type AssortmentCategory = {
   id: AssortmentCategoryId;

@@ -30,7 +30,7 @@ export function MasnyiHome() {
           <h1 id="mobile-hero-title"><span>СВІЖЕ.</span><span>ЩОДНЯ.</span><span>М&apos;ЯСО.</span></h1>
           <div className="masnyi-hero__mobile-image"><Image src="/images/masnyi/mobile-hero.jpeg" alt="Dry aged steak" fill sizes="calc(100vw - 40px)" /></div>
           <div className="masnyi-hero__mobile-tag">[ DRY AGED 21 DAYS ]</div>
-          <ContactDialogTrigger className="masnyi-hero__mobile-cta">ЗАМОВИТИ ЗАРАЗ <span aria-hidden="true">→</span></ContactDialogTrigger>
+          <Link href="/assortment" className="masnyi-hero__mobile-cta">ДО АСОРТИМЕНТУ <span aria-hidden="true">→</span></Link>
         </div>
       </section>
 

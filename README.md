@@ -12,6 +12,24 @@ pnpm dev
 
 Open `http://localhost:3000`.
 
+## Admin and Neon Postgres
+
+The assortment admin is available at `/admin/assortment`. It uses Neon Postgres through `DATABASE_URL`; apply the SQL migrations with:
+
+```bash
+pnpm db:migrate
+```
+
+Admin access uses one password only. Generate a bcrypt hash without logging or saving the password:
+
+```bash
+pnpm admin:password-hash
+```
+
+Copy the printed hash into `ADMIN_PASSWORD_HASH` in `.env.local` and set a random `ADMIN_SESSION_SECRET` of at least 32 characters. The app stores only a signed, httpOnly session cookie. Failed sign-in attempts are temporarily rate-limited, and `/admin/*` plus admin assortment APIs require a valid session.
+
+Because Next.js expands `$` in `.env` files, escape each bcrypt dollar sign when pasting it there (`$2b$...` becomes `\$2b\$...`).
+
 Useful commands:
 
 ```bash
@@ -32,6 +50,15 @@ pnpm start      # serve production build
 
 ## Contact delivery
 
-The client form validates in the browser and again in `app/api/contact/route.ts`. Delivery is independent of the form: Telegram Bot API and SMTP email adapters can each be enabled with `.env.local`. A request returns `200` when at least one enabled channel delivers successfully, including partial delivery when another active channel fails. If all channels are disabled, the API returns `503`; if all active channels fail, it returns `502`. Partial delivery is still success because the lead reached at least one destination; retries can duplicate it. Honeypot submissions are silently accepted with `200` and are not delivered. The honeypot is only basic zero-infrastructure spam protection, not a complete automated-abuse defense. Add persistent rate limiting or CAPTCHA separately for higher-risk sites.
+The client form validates in the browser and again in `app/api/contact/route.ts`. Every valid application is delivered to Telegram through the Bot API. If `TELEGRAM_BOT_TOKEN` or `TELEGRAM_CHAT_ID` is missing, the API returns `503` instead of reporting success; Telegram failures return `502`. The form keeps a honeypot and has a small server-side IP rate limit.
+
+To configure Telegram:
+
+1. Open Telegram, find `@BotFather`, run `/newbot` and copy the bot token into `.env.local` as `TELEGRAM_BOT_TOKEN`.
+2. Add the bot to the managers group and grant it permission to send messages.
+3. Send a message in that group, then open `https://api.telegram.org/bot<TOKEN>/getUpdates` and copy the group `chat.id` into `.env.local` as `TELEGRAM_CHAT_ID` (group IDs commonly start with `-100`).
+4. Restart the dev server after changing `.env.local`.
+
+Never commit the token or chat ID. The Telegram token is used only on the server and is never sent to the browser.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/DESIGN-HANDOFF.md`](docs/DESIGN-HANDOFF.md) for the working model.
