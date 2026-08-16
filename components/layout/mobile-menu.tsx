@@ -19,13 +19,21 @@ export function MobileMenu() {
 
   return (
     <Sheet open={open} onOpenChange={setOpen}>
-      <SheetTrigger asChild>
-        <button type="button" className="masnyi-menu-button" aria-label={open ? "Закрити меню" : "Відкрити меню"} onClick={(event) => { event.preventDefault(); setOpen((current) => !current); }}>
+      {open ? (
+        <button type="button" className="masnyi-menu-button" aria-label="Закрити меню" aria-expanded="true" data-state="open" onClick={() => setOpen(false)}>
           <span />
           <span />
           <span />
         </button>
-      </SheetTrigger>
+      ) : (
+        <SheetTrigger asChild>
+          <button type="button" className="masnyi-menu-button" aria-label="Відкрити меню" aria-expanded="false" data-state="closed">
+            <span />
+            <span />
+            <span />
+          </button>
+        </SheetTrigger>
+      )}
       <SheetContent className="mobile-sheet" aria-describedby={undefined}>
         <SheetTitle className="sr-only">Мобільне меню</SheetTitle>
         <div className="mobile-sheet__inner">
