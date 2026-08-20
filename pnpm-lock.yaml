@@ -20,6 +20,9 @@ importers:
       next:
         specifier: ^15.5.0
         version: 15.5.22(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      nodemailer:
+        specifier: ^9.0.5
+        version: 9.0.5
       optional:
         specifier: ^0.1.4
         version: 0.1.4
@@ -38,10 +41,13 @@ importers:
     devDependencies:
       '@eslint/eslintrc':
         specifier: ^3.3.1
-        version: 3.3.6(supports-color@7.2.0)
+        version: 3.3.6
       '@types/node':
         specifier: ^22.15.0
         version: 22.20.1
+      '@types/nodemailer':
+        specifier: ^8.0.1
+        version: 8.0.1
       '@types/react':
         specifier: ^19.1.0
         version: 19.2.18
@@ -738,6 +744,9 @@ packages:
 
   '@types/node@22.20.1':
     resolution: {integrity: sha512-EANqOCF9QFyra+4pfxUcX9STKJpCLjMbObVzljIJomAWSnuSIEAvyzEU53GaajbXJEgdh0iEcPL+DGvpUd4k1Q==}
+
+  '@types/nodemailer@8.0.1':
+    resolution: {integrity: sha512-PxpaInm8V1JQDd4j0ds5HfvWQk8JupS1C0Picb96QJsrrRDjBH+DlK7L4ZdNSqNULhiZRQHc40nLVShaGxXAMw==}
 
   '@types/react-dom@19.2.4':
     resolution: {integrity: sha512-Bsc+QHgp+P/F02XDzNCY9jnZNCUuLki36KT7VKrTXXLdHf+vHMNZnW1rVu5DNW/rCK+fya3DATySbLM4yhtKUw==}
@@ -1768,6 +1777,10 @@ packages:
     resolution: {integrity: sha512-MRlTqhAfoMx/4mhEbPo3Hi02g9LJZaJkka69V6h67Cb1gjrAG0jsTE4CZX1eptNx+VCAwJmfpnDIF4P0Nh1A7A==}
     engines: {node: '>=18'}
 
+  nodemailer@9.0.5:
+    resolution: {integrity: sha512-wvjiKvjczmsN7U/8006JOdXubgBk2XFAbioDMbT+sM7cPs0QrhJTa6KBRX7P5REGGkDcLUz/EarWidb8G8C1jQ==}
+    engines: {node: '>=6.0.0'}
+
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
@@ -2414,7 +2427,7 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
 
-  '@eslint/eslintrc@3.3.6(supports-color@7.2.0)':
+  '@eslint/eslintrc@3.3.6':
     dependencies:
       ajv: 6.15.0
       debug: 4.4.3(supports-color@7.2.0)
@@ -2777,6 +2790,10 @@ snapshots:
     dependencies:
       undici-types: 6.21.0
 
+  '@types/nodemailer@8.0.1':
+    dependencies:
+      '@types/node': 22.20.1
+
   '@types/react-dom@19.2.4(@types/react@19.2.18)':
     dependencies:
       '@types/react': 19.2.18
@@ -2791,7 +2808,7 @@ snapshots:
       '@typescript-eslint/parser': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
       '@typescript-eslint/scope-manager': 8.66.0
       '@typescript-eslint/type-utils': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(typescript@5.9.3)
       '@typescript-eslint/visitor-keys': 8.66.0
       eslint: 9.39.5(jiti@1.21.7)(supports-color@7.2.0)
       ignore: 7.0.6
@@ -2835,7 +2852,7 @@ snapshots:
     dependencies:
       '@typescript-eslint/types': 8.66.0
       '@typescript-eslint/typescript-estree': 8.66.0(supports-color@7.2.0)(typescript@5.9.3)
-      '@typescript-eslint/utils': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
+      '@typescript-eslint/utils': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(typescript@5.9.3)
       debug: 4.4.3(supports-color@7.2.0)
       eslint: 9.39.5(jiti@1.21.7)(supports-color@7.2.0)
       ts-api-utils: 2.5.0(typescript@5.9.3)
@@ -2860,7 +2877,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@typescript-eslint/utils@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)':
+  '@typescript-eslint/utils@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(typescript@5.9.3)':
     dependencies:
       '@eslint-community/eslint-utils': 4.10.1(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))
       '@typescript-eslint/scope-manager': 8.66.0
@@ -3381,7 +3398,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 8.66.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
       '@typescript-eslint/parser': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
       eslint: 9.39.5(jiti@1.21.7)(supports-color@7.2.0)
-      eslint-import-resolver-node: 0.3.10(supports-color@7.2.0)
+      eslint-import-resolver-node: 0.3.10
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)
       eslint-plugin-jsx-a11y: 6.10.2(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))
@@ -3394,7 +3411,7 @@ snapshots:
       - eslint-plugin-import-x
       - supports-color
 
-  eslint-import-resolver-node@0.3.10(supports-color@7.2.0):
+  eslint-import-resolver-node@0.3.10:
     dependencies:
       debug: 3.2.7(supports-color@7.2.0)
       is-core-module: 2.16.2
@@ -3417,13 +3434,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.14.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10(supports-color@7.2.0))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0):
+  eslint-module-utils@2.14.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
       debug: 3.2.7(supports-color@7.2.0)
     optionalDependencies:
       '@typescript-eslint/parser': 8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3)
       eslint: 9.39.5(jiti@1.21.7)(supports-color@7.2.0)
-      eslint-import-resolver-node: 0.3.10(supports-color@7.2.0)
+      eslint-import-resolver-node: 0.3.10
       eslint-import-resolver-typescript: 3.10.1(eslint-plugin-import@2.32.0)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)
     transitivePeerDependencies:
       - supports-color
@@ -3438,8 +3455,8 @@ snapshots:
       debug: 3.2.7(supports-color@7.2.0)
       doctrine: 2.1.0
       eslint: 9.39.5(jiti@1.21.7)(supports-color@7.2.0)
-      eslint-import-resolver-node: 0.3.10(supports-color@7.2.0)
-      eslint-module-utils: 2.14.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10(supports-color@7.2.0))(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)
+      eslint-import-resolver-node: 0.3.10
+      eslint-module-utils: 2.14.0(@typescript-eslint/parser@8.66.0(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)(typescript@5.9.3))(eslint-import-resolver-node@0.3.10)(eslint-import-resolver-typescript@3.10.1)(eslint@9.39.5(jiti@1.21.7)(supports-color@7.2.0))(supports-color@7.2.0)
       hasown: 2.0.4
       is-core-module: 2.16.2
       is-glob: 4.0.3
@@ -3520,7 +3537,7 @@ snapshots:
       '@eslint/config-array': 0.21.2(supports-color@7.2.0)
       '@eslint/config-helpers': 0.4.2
       '@eslint/core': 0.17.0
-      '@eslint/eslintrc': 3.3.6(supports-color@7.2.0)
+      '@eslint/eslintrc': 3.3.6
       '@eslint/js': 9.39.5
       '@eslint/plugin-kit': 0.4.1
       '@humanfs/node': 0.16.8
@@ -3986,6 +4003,8 @@ snapshots:
       semver: 6.3.1
 
   node-releases@2.0.52: {}
+
+  nodemailer@9.0.5: {}
 
   normalize-path@3.0.0: {}
 

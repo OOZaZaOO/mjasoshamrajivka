@@ -18,6 +18,7 @@
     "@radix-ui/react-dialog": "^1.1.23",
     "bcryptjs": "^3.0.2",
     "next": "^15.5.0",
+    "nodemailer": "^9.0.5",
     "optional": "^0.1.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
@@ -27,6 +28,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@types/node": "^22.15.0",
+    "@types/nodemailer": "^8.0.1",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
     "autoprefixer": "^10.4.21",
